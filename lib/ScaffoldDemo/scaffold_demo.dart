@@ -96,10 +96,10 @@ class _ScaffoldDemoState extends State<ScaffoldDemo> with TickerProviderStateMix
       ),
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
-      persistentFooterButtons: <Widget>[
-        TextButton(onPressed: () {}, child: const Text('取消')),
-        TextButton(onPressed: () {}, child: const Text('确认授权')),
-      ],
+      // persistentFooterButtons: <Widget>[
+      //   TextButton(onPressed: () {}, child: const Text('取消')),
+      //   TextButton(onPressed: () {}, child: const Text('确认授权')),
+      // ],
       // 对应的有endDrawer
       drawer: const Drawer(
         child: Center(child: Text('我是抽屉')),
@@ -110,20 +110,20 @@ class _ScaffoldDemoState extends State<ScaffoldDemo> with TickerProviderStateMix
       },
       drawerScrimColor: Colors.black54,
       drawerEdgeDragWidth: 50,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: '首页'),
-          BottomNavigationBarItem(icon: Icon(Icons.my_library_add), label: '账户'),
-        ],
-        currentIndex: _currentTabIndex,
-        onTap: (value) {
-          setState(() {
-            _currentTabIndex = value;
-          });
-        },
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: '首页'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.my_library_add), label: '账户'),
+      //   ],
+      //   currentIndex: _currentTabIndex,
+      //   onTap: (value) {
+      //     setState(() {
+      //       _currentTabIndex = value;
+      //     });
+      //   },
+      // ),
       bottomSheet: SizedBox(
-        width: MediaQuery.of(context).size.width - 20,
+        width: MediaQuery.of(context).size.width - 0,
         child: Row(
           children: [
             const Expanded(
