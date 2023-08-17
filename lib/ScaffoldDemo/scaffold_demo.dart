@@ -122,17 +122,20 @@ class _ScaffoldDemoState extends State<ScaffoldDemo> with TickerProviderStateMix
           });
         },
       ),
-      bottomSheet: Row(
-        children: [
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
+      bottomSheet: SizedBox(
+        width: MediaQuery.of(context).size.width - 20,
+        child: Row(
+          children: [
+            const Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                ),
               ),
             ),
-          ),
-          TextButton(onPressed: () {}, child: const Text('发送')),
-        ],
+            TextButton(onPressed: () {}, child: const Text('发送')),
+          ],
+        ),
       ),
     );
   }
