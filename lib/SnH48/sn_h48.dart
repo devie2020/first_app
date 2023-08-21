@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-
 class SnH48 extends StatefulWidget {
   const SnH48({super.key});
 
@@ -25,7 +24,13 @@ class _SnH48State extends State<SnH48> {
         itemBuilder: (BuildContext context, int index) {
           Member member = _members[index];
           return ListTile(
-            leading: Image.network('https://www.snh48.com/images/member/zp_${member.id}.jpg'),
+            leading: ClipOval(
+              child: CircleAvatar(
+                radius: 32,
+                backgroundColor: Colors.white,
+                child: Image.network(member.getAvatarUrl),
+              ),
+            ),
             title: Text(member.name),
             subtitle: Text(member.id),
           );
@@ -46,19 +51,22 @@ class _SnH48State extends State<SnH48> {
 
           setState(() => _members = members.toList());
         },
-        backgroundColor: const Color.fromARGB(255, 209, 82, 238),
         child: const Icon(Icons.refresh),
       ),
     );
   }
 }
+
 class Member {
   final String id;
   final String name;
 
   Member({required this.id, required this.name});
 
+  String get getAvatarUrl {
+    return 'https://www.snh48.com/images/member/zp_$id.jpg';
+  }
+
   @override
   String toString() => '$id: $name';
 }
-

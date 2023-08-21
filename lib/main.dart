@@ -13,13 +13,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 209, 82, 238))
+        primarySwatch: Colors.pink,
       ),
       home: const SnH48(),
       debugShowCheckedModeBanner: false,
