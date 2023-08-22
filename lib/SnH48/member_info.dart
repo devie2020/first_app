@@ -62,8 +62,12 @@ class MemberInfo extends StatelessWidget {
                         aspectRatio: 1,
                         child: Hero(
                           tag: heroKey,
-                          child: ClipOval(
-                            child: Image.network(info.avatarUrl, fit: BoxFit.cover),
+                          child: Material(
+                            shape: const CircleBorder(),
+                            elevation: 4.0,
+                            child: ClipOval(
+                              child: Image.network(info.avatarUrl, fit: BoxFit.cover),
+                            ),
                           ),
                         ),
                       ),
@@ -91,7 +95,7 @@ class MemberInfo extends StatelessWidget {
               buildRow('特长', info.speciality),
               buildRow('兴趣', info.hobby),
             ]),
-          )
+          ),
         ],
       ),
     );
