@@ -12,6 +12,30 @@ class SnH48List extends StatefulWidget {
 class _SnH48ListState extends State<SnH48List> {
   List<Member> _members = [];
 
+  @override
+  initState() {
+    _fetchMemberList();
+    super.initState();
+  }
+
+  // 获取列表
+  _fetchMemberList() async {
+    setState(() => _members.clear());
+    const url = 'https://h5.48.cn/resource/jsonp/allmembers.php?gid=10';
+    final res = await http.get(Uri.parse(url));
+    if (res.statusCode != 200) {
+      throw ('error::');
+    }
+
+    final jsonData = convert.jsonDecode(res.body);
+    final members = jsonData['rows'].map<Member>((row) {
+      return Member(id: row['sid'], name: row['sname'], team: row['tname']);
+    });
+
+    setState(() => _members = members.toList());
+  }
+
+  // 构造每个组的列表
   SliverList _buildTeamList(String teamName) {
     List<Member> teamMembers = _members.where((row) => row.team == teamName).toList();
 
@@ -23,7 +47,7 @@ class _SnH48ListState extends State<SnH48List> {
             child: CircleAvatar(
               radius: 32,
               backgroundColor: Colors.white,
-              child: Image.network(member.getAvatarUrl),
+              child: Image.network(member.avatarUrl),
             ),
           ),
           title: Text(member.name),
@@ -42,50 +66,39 @@ class _SnH48ListState extends State<SnH48List> {
         title: const Text('hello, SNH48'),
         centerTitle: true,
       ),
-      body: CustomScrollView(
-        slivers: [
-          // SII
-          SliverPersistentHeader(
-            delegate: _TeamDelegate('Team SII', const Color(0xff91cdeb)),
-            pinned: true,
+      body: Scrollbar(
+        child: RefreshIndicator(
+          onRefresh: () => _fetchMemberList(),
+          child: CustomScrollView(
+            slivers: [
+              const SliverToBoxAdapter(),
+              // SII
+              SliverPersistentHeader(
+                delegate: _TeamDelegate('Team SII', const Color(0xff91cdeb)),
+                pinned: true,
+              ),
+              _buildTeamList('SII'),
+              // NII
+              SliverPersistentHeader(
+                delegate: _TeamDelegate('Team NII', const Color(0xffae86bb)),
+                pinned: true,
+              ),
+              _buildTeamList('NII'),
+              // HII
+              SliverPersistentHeader(
+                delegate: _TeamDelegate('Team HII', const Color(0xfff39800)),
+                pinned: true,
+              ),
+              _buildTeamList('HII'),
+              // X
+              SliverPersistentHeader(
+                delegate: _TeamDelegate('Team X', const Color(0xffa9cc29)),
+                pinned: true,
+              ),
+              _buildTeamList('X'),
+            ],
           ),
-          _buildTeamList('SII'),
-          // NII
-          SliverPersistentHeader(
-            delegate: _TeamDelegate('Team NII', const Color(0xffae86bb)),
-            pinned: true,
-          ),
-          _buildTeamList('NII'),
-          // HII
-          SliverPersistentHeader(
-            delegate: _TeamDelegate('Team HII', const Color(0xfff39800)),
-            pinned: true,
-          ),
-          _buildTeamList('HII'),
-          // X
-          SliverPersistentHeader(
-            delegate: _TeamDelegate('Team X', const Color(0xffa9cc29)),
-            pinned: true,
-          ),
-          _buildTeamList('X'),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          const url = 'https://h5.48.cn/resource/jsonp/allmembers.php?gid=10';
-          final res = await http.get(Uri.parse(url));
-          if (res.statusCode != 200) {
-            throw ('error::');
-          }
-
-          final jsonData = convert.jsonDecode(res.body);
-          final members = jsonData['rows'].map<Member>((row) {
-            return Member(id: row['sid'], name: row['sname'], team: row['tname']);
-          });
-
-          setState(() => _members = members.toList());
-        },
-        child: const Icon(Icons.refresh),
+        ),
       ),
     );
   }
@@ -130,7 +143,7 @@ class Member {
 
   Member({required this.id, required this.name, required this.team});
 
-  String get getAvatarUrl {
+  String get avatarUrl {
     return 'https://www.snh48.com/images/member/zp_$id.jpg';
   }
 
