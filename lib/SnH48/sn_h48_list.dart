@@ -17,7 +17,6 @@ class _SnH48ListState extends State<SnH48List> {
 
     return SliverList(
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        debugPrint('result: $index');
         Member member = teamMembers[index];
         return ListTile(
           leading: ClipOval(
@@ -31,7 +30,7 @@ class _SnH48ListState extends State<SnH48List> {
           subtitle: Text(member.id),
           trailing: Text(member.team),
         );
-      }, childCount: _members.length),
+      }, childCount: teamMembers.length),
     );
   }
 
@@ -45,9 +44,29 @@ class _SnH48ListState extends State<SnH48List> {
       ),
       body: CustomScrollView(
         slivers: [
+          // SII
+          SliverPersistentHeader(
+            delegate: _TeamDelegate('Team SII', const Color(0xff91cdeb)),
+            pinned: true,
+          ),
           _buildTeamList('SII'),
+          // NII
+          SliverPersistentHeader(
+            delegate: _TeamDelegate('Team NII', const Color(0xffae86bb)),
+            pinned: true,
+          ),
           _buildTeamList('NII'),
+          // HII
+          SliverPersistentHeader(
+            delegate: _TeamDelegate('Team HII', const Color(0xfff39800)),
+            pinned: true,
+          ),
           _buildTeamList('HII'),
+          // X
+          SliverPersistentHeader(
+            delegate: _TeamDelegate('Team X', const Color(0xffa9cc29)),
+            pinned: true,
+          ),
           _buildTeamList('X'),
         ],
       ),
@@ -69,6 +88,38 @@ class _SnH48ListState extends State<SnH48List> {
         child: const Icon(Icons.refresh),
       ),
     );
+  }
+}
+
+// 会员组的代理
+class _TeamDelegate extends SliverPersistentHeaderDelegate {
+  final String title;
+  final Color color;
+  _TeamDelegate(this.title, this.color);
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      height: 32,
+      color: color,
+      child: Center(
+        child: Text(
+          title,
+          style: const TextStyle(fontSize: 20),
+        ),
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 32;
+
+  @override
+  double get minExtent => 32;
+
+  @override
+  bool shouldRebuild(covariant _TeamDelegate oldDelegate) {
+    return oldDelegate.title != title;
   }
 }
 
