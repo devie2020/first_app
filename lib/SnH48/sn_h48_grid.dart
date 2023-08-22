@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-class SnH48 extends StatefulWidget {
-  const SnH48({super.key});
+class SnH48List extends StatefulWidget {
+  const SnH48List({super.key});
 
   @override
-  State<SnH48> createState() => _SnH48State();
+  State<SnH48List> createState() => _SnH48ListState();
 }
 
-class _SnH48State extends State<SnH48> {
+class _SnH48ListState extends State<SnH48List> {
   List<Member> _members = [];
 
   @override
@@ -19,22 +19,25 @@ class _SnH48State extends State<SnH48> {
         elevation: 0,
         title: const Text('hello, SNH48'),
       ),
-      body: ListView.builder(
-        itemCount: _members.length,
-        itemBuilder: (BuildContext context, int index) {
-          Member member = _members[index];
-          return ListTile(
-            leading: ClipOval(
-              child: CircleAvatar(
-                radius: 32,
-                backgroundColor: Colors.white,
-                child: Image.network(member.getAvatarUrl),
-              ),
-            ),
-            title: Text(member.name),
-            subtitle: Text(member.id),
-          );
-        },
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+              Member member = _members[index];
+              return ListTile(
+                leading: ClipOval(
+                  child: CircleAvatar(
+                    radius: 32,
+                    backgroundColor: Colors.white,
+                    child: Image.network(member.getAvatarUrl),
+                  ),
+                ),
+                title: Text(member.name),
+                subtitle: Text(member.id),
+              );
+            }, childCount: _members.length),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -46,7 +49,7 @@ class _SnH48State extends State<SnH48> {
 
           final jsonData = convert.jsonDecode(res.body);
           final members = jsonData['rows'].map<Member>((row) {
-            return Member(id: row['sid'], name: row['sname']);
+            return Member(id: row['sid'], name: row['sname'], team: row['tname']);
           });
 
           setState(() => _members = members.toList());
@@ -60,8 +63,9 @@ class _SnH48State extends State<SnH48> {
 class Member {
   final String id;
   final String name;
+  final String team;
 
-  Member({required this.id, required this.name});
+  Member({required this.id, required this.name, required this.team});
 
   String get getAvatarUrl {
     return 'https://www.snh48.com/images/member/zp_$id.jpg';

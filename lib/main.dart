@@ -1,4 +1,4 @@
-import 'package:fist_app/SnH48/sn_h48.dart';
+import 'package:fist_app/SnH48/sn_h48_list.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.pink,
       ),
-      home: const SnH48(),
+      home: const SnH48List(),
       debugShowCheckedModeBanner: false,
       showSemanticsDebugger: false,
     );
