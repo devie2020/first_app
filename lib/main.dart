@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SnH48/sn_h48_grid.dart';
+import 'SnH48/sn_h48_grid2.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.pink,
       ),
-      home: const SnH48Grid(),
+      home: const SnH48Grid2(),
       debugShowCheckedModeBanner: false,
       showSemanticsDebugger: false,
     );
